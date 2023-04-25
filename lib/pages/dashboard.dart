@@ -38,7 +38,6 @@ class _DashboardState extends State<Dashboard> {
           ),
           elevation: 3,
           shadowColor: Colors.black,
-          // automaticallyImplyLeading: false,
           actions: [
             Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),

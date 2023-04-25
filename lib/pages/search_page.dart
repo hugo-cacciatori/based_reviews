@@ -7,9 +7,21 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(),
-        body: TextField(
-          enabled: true,
-        ));
+      appBar: AppBar(
+          title: const Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: TextField(
+              enabled: true,
+            ),
+          ),
+          Expanded(
+            flex: 0,
+            child: Icon(Icons.search),
+          )
+        ],
+      )),
+    );
   }
 }
