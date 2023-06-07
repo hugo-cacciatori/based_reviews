@@ -21,10 +21,8 @@ class CustomAppBar extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
               child: IconButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SearchPage()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SearchPage()));
                   },
                   icon: const Icon(Icons.search)))
         ]);

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'widgets/custom_scroll_behavior.dart';
 
-void main() async {
+main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const BasedReviewsApp());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(
+    const BasedReviewsApp(),
+  );
 }
 
 class BasedReviewsApp extends StatelessWidget {
@@ -17,6 +23,7 @@ class BasedReviewsApp extends StatelessWidget {
           useMaterial3: true,
           brightness: Brightness.light,
         ),
+        scrollBehavior: CustomScrollBehavior(),
         home: const HomePage());
   }
 }
