@@ -1,37 +1,48 @@
 class User {
-  final int id;
+  final String id;
   final String name;
-  final String login;
+  final String email;
   final String pwHash;
+  final String image;
 
   User(
       {required this.id,
       required this.name,
       required this.pwHash,
-      required this.login});
+      required this.email,
+      required this.image});
 
   factory User.fromMap(Map<String, dynamic> json) => User(
       id: json['id'],
       name: json['name'],
-      login: json['login'],
-      pwHash: json['pwHash']);
+      email: json['email'],
+      pwHash: json['pwHash'],
+      image: json['image']);
 
   factory User.fromJson(Map<String, dynamic> json) => User(
       id: json['id'],
       name: json['name'],
-      login: json['login'],
-      pwHash: json['pwHash']);
+      email: json['email'],
+      pwHash: json['pwHash'],
+      image: json['image']);
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> user = <String, dynamic>{};
     user['id'] = id;
     user['name'] = name;
-    user['login'] = login;
+    user['email'] = email;
     user['pwHash'] = pwHash;
+    user['image'] = image;
     return user;
   }
 
   Map<String, dynamic> toMap() {
-    return {'id': id, 'name': name, 'login': login, 'pwHash': pwHash};
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'pwHash': pwHash,
+      'image': image
+    };
   }
 }

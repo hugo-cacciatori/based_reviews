@@ -59,6 +59,7 @@ class _SearchPageState extends State<SearchPage> {
                     itemBuilder: (context, index) {
                       var data = snapshots.data!.docs[index].data()
                           as Map<String, dynamic>;
+                      var movieUID = snapshots.data!.docs[index].id;
                       if (query.isEmpty) {
                         return Container();
                       }
@@ -92,8 +93,11 @@ class _SearchPageState extends State<SearchPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        MoviePage(movieData: data)));
+                                    builder: (context) => MoviePage(
+                                        movieData: data,
+                                        movieUID: movieUID))).then((value) {
+                              ScaffoldMessenger.of(context).clearSnackBars();
+                            });
                           },
                         );
                       }

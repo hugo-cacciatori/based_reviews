@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages/home_page.dart';
+import 'pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'widgets/custom_scroll_behavior.dart';
@@ -24,6 +24,6 @@ class BasedReviewsApp extends StatelessWidget {
           brightness: Brightness.light,
         ),
         scrollBehavior: CustomScrollBehavior(),
-        home: const HomePage());
+        home: LoginPage());
   }
 }

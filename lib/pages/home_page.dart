@@ -1,45 +1,99 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../models/user.dart';
-import 'dashboard.dart';
+import 'movie_page.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-        body: Center(
-      child: Column(children: [
-        SizedBox(height: screenSize.height / 4),
-        Image.asset(
-          'assets/images/logo.png',
-          width: screenSize.width / 1.5,
-        ),
-        const SizedBox(height: 15),
-        const Text("L'appli des cinéphiles"),
-        SizedBox(height: screenSize.height / 4),
-        ElevatedButton(
-            onPressed: () {
-              User currentUser =
-                  User(id: 1, name: 'Hugo', pwHash: 'XYZ', login: 'hugo');
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Dashboard(currentUser: currentUser)),
-                  (route) => false);
-            },
-            child: const Text('Se connecter')),
-        SizedBox(height: screenSize.height / 3.6),
+    Size screenSize = MediaQuery.of(context).size;
+    return Center(
+        child: Column(
+      children: [
+        SizedBox(height: screenSize.height / 32),
         const Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text('©2023 Hugo Cacciatori, Thomas Belaidi, Joseph Laugier ')
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'In theaters :',
+                style: TextStyle(fontSize: 22),
+              ),
+            ),
           ],
-        )
-      ]),
+        ),
+        StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('movies')
+                .where('year', isEqualTo: '2023')
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text("error");
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Text("waiting");
+              }
+
+              return SizedBox(
+                height: 250,
+                child: ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      var data = snapshot.data!.docs[index].data()
+                          as Map<String, dynamic>;
+                      var movieUID = snapshot.data!.docs[index].id;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 5),
+                        child: SizedBox(
+                          width: 150,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MoviePage(
+                                            movieData: data,
+                                            movieUID: movieUID,
+                                          ))).then((value) {
+                                ScaffoldMessenger.of(context).clearSnackBars();
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 200,
+                                  width: 150,
+                                  child: Card(
+                                      child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(data['image']),
+                                            fit: BoxFit.fill)),
+                                  )),
+                                ),
+                                Text(
+                                  data['name'],
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+              );
+            })
+      ],
     ));
   }
 }
