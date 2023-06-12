@@ -6,8 +6,8 @@ import '../constants/session.dart';
 class MoviePage extends StatefulWidget {
   MoviePage({super.key, required this.movieData, required this.movieUID});
 
-  Map<String, dynamic> movieData;
-  String movieUID;
+  final Map<String, dynamic> movieData;
+  final String movieUID;
 
   @override
   State<MoviePage> createState() => _MoviePageState();
@@ -19,7 +19,7 @@ class _MoviePageState extends State<MoviePage> {
     var screenSize = MediaQuery.of(context).size;
     TextEditingController commentController = TextEditingController();
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Image.asset(
           'assets/images/logo.png',
@@ -73,7 +73,7 @@ class _MoviePageState extends State<MoviePage> {
                   ),
                 ],
               ),
-              Divider(),
+              const Divider(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -88,7 +88,7 @@ class _MoviePageState extends State<MoviePage> {
                             NetworkImage(Session.currentUser.toMap()['image']),
                       ),
                     ),
-                    SizedBox(width: 300, child: TextField()),
+                    const SizedBox(width: 300, child: TextField()),
                   ],
                 ),
               ),
@@ -110,8 +110,8 @@ class _MoviePageState extends State<MoviePage> {
                       child: ListView.builder(
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
+                            return const Padding(
+                              padding: EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 5),
                               child: SizedBox(width: 150),
                             );

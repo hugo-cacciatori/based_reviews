@@ -11,8 +11,8 @@ import 'register_page.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
   final formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
               child: Column(children: [
                 Card(
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
                         const SizedBox(width: 65, child: Text('Email')),
@@ -47,7 +47,7 @@ class LoginPage extends StatelessWidget {
                         SizedBox(
                             width: 200,
                             child: TextFormField(
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.emailAddress,
                               enableSuggestions: false,
                               autocorrect: false,
                               controller: emailController,
@@ -130,42 +130,45 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 30,
+            height: 50,
           ),
           SizedBox(
             width: 300,
             child: ElevatedButton(
                 onPressed: () async {
-                  var pwBytes = utf8.encode(passwordController.text);
-                  var pwHash = sha256.convert(pwBytes);
-                  await FirebaseFirestore.instance
-                      .collection('users')
-                      .where('email', isEqualTo: emailController.text)
-                      .where('password', isEqualTo: '$pwHash')
-                      .get()
-                      .then((value) {
-                    if (value.docs.isEmpty) {
-                      ScaffoldMessenger.of(context)
-                        ..removeCurrentSnackBar()
-                        ..showSnackBar(const SnackBar(
-                            backgroundColor: Colors.red,
-                            content: Text(
-                              'User not found',
-                              style: TextStyle(color: Colors.white),
-                            )));
-                    } else {
-                      Session.currentUser = User(
-                          id: value.docs[0].id,
-                          name: value.docs[0]['name'],
-                          pwHash: value.docs[0]['password'],
-                          email: value.docs[0]['email'],
-                          image: value.docs[0]['image']);
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => Dashboard()),
-                          (route) => false);
-                    }
-                  });
+                  if (formKey.currentState!.validate()) {
+                    var pwBytes = utf8.encode(passwordController.text);
+                    var pwHash = sha256.convert(pwBytes);
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .where('email', isEqualTo: emailController.text)
+                        .where('password', isEqualTo: '$pwHash')
+                        .get()
+                        .then((value) {
+                      if (value.docs.isEmpty) {
+                        ScaffoldMessenger.of(context)
+                          ..removeCurrentSnackBar()
+                          ..showSnackBar(const SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                'User not found',
+                                style: TextStyle(color: Colors.white),
+                              )));
+                      } else {
+                        Session.currentUser = User(
+                            id: value.docs[0].id,
+                            name: value.docs[0]['name'],
+                            pwHash: value.docs[0]['password'],
+                            email: value.docs[0]['email'],
+                            image: value.docs[0]['image']);
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Dashboard()),
+                            (route) => false);
+                      }
+                    });
+                  }
                 },
                 child: const Text('Se connecter')),
           ),

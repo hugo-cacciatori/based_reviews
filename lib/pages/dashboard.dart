@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/debug.dart';
-import '../models/user.dart';
 import 'home_page.dart';
-import 'movie_page.dart';
 import 'profile_page.dart';
 import 'search_page.dart';
 
 class Dashboard extends StatefulWidget {
-  Dashboard({super.key});
+  const Dashboard({super.key});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -243,6 +241,15 @@ class _DashboardState extends State<Dashboard> {
   addData() async {
     await FirebaseFirestore.instance
         .collection('movies')
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
+
+    await FirebaseFirestore.instance
+        .collection('comments')
         .get()
         .then((snapshot) {
       for (DocumentSnapshot ds in snapshot.docs) {

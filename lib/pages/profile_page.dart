@@ -30,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
         CircleAvatar(
           maxRadius: 50,
           backgroundImage: NetworkImage(
-            Session.currentUser.toMap()['image'],
+            Session.currentUser.image,
           ),
         ),
         const SizedBox(
@@ -38,6 +38,10 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         Text(
           Session.currentUser.name,
+          style: const TextStyle(fontSize: 18),
+        ),
+        Text(
+          Session.currentUser.email,
           style: const TextStyle(fontSize: 18),
         ),
         const SizedBox(

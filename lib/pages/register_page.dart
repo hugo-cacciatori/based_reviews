@@ -222,6 +222,7 @@ class RegisterPage extends StatelessWidget {
                     if (formKey.currentState!.validate()) {
                       var pwBytes = utf8.encode(passwordController.text);
                       var pwHash = sha256.convert(pwBytes);
+
                       await FirebaseFirestore.instance.collection('users').add({
                         'name': usernameController.text,
                         'email': emailController.text,
