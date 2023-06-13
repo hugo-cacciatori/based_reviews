@@ -43,13 +43,12 @@ class _HomePageState extends State<HomePage> {
               }
 
               return SizedBox(
-                height: 250,
+                height: 300,
                 child: ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      var data = snapshot.data!.docs[index].data()
-                          as Map<String, dynamic>;
+                      var data = snapshot.data!.docs[index].data();
                       var movieUID = snapshot.data!.docs[index].id;
                       return Padding(
                         padding: const EdgeInsets.symmetric(
@@ -71,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                             child: Column(
                               children: [
                                 Container(
-                                  height: 200,
+                                  height: 250,
                                   width: 150,
                                   child: Card(
                                       child: DecoratedBox(

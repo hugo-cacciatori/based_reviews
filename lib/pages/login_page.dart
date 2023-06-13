@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:crypto/crypto.dart';
+import '../constants/debug.dart';
 import '../constants/session.dart';
 import '../models/user.dart';
 import 'dashboard.dart';
@@ -17,6 +18,10 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    if (debug) {
+      emailController.text = 'test@test.fr';
+      passwordController.text = 'test';
+    }
     return Scaffold(
         body: SingleChildScrollView(
       child: Center(

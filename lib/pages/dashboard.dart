@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/debug.dart';
@@ -264,15 +266,47 @@ class _DashboardState extends State<Dashboard> {
     await FirebaseFirestore.instance
         .collection('movies')
         .get()
-        .then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.docs) {
-        FirebaseFirestore.instance
-            .collection('comments')
-            .add({'movieID': ds.id});
-      }
-    });
+        .then((value) async {
+      var random = Random();
+      List<Map<String, dynamic>> commentsData = [
+        {
+          'movieID': value.docs[random.nextInt(value.docs.length)].id,
+          'userID': '115vIeZ4b9MjRQnhEz3d',
+          'content': 'Woohoo, super film, génial !'
+        },
+        {
+          'movieID': value.docs[random.nextInt(value.docs.length)].id,
+          'userID': '115vIeZ4b9MjRQnhEz3d',
+          'content': 'Le meilleur harry potter'
+        },
+        {
+          'movieID': value.docs[random.nextInt(value.docs.length)].id,
+          'userID': '115vIeZ4b9MjRQnhEz3d',
+          'content': 'Good afternoon, good evening and good night !'
+        },
+        {
+          'movieID': value.docs[random.nextInt(value.docs.length)].id,
+          'userID': '115vIeZ4b9MjRQnhEz3d',
+          'content': 'Pilule rouge > pilule bleue'
+        },
+        {
+          'movieID': value.docs[random.nextInt(value.docs.length)].id,
+          'userID': '115vIeZ4b9MjRQnhEz3d',
+          'content': 'REDRUM'
+        },
+        {
+          'movieID': value.docs[random.nextInt(value.docs.length)].id,
+          'userID': '115vIeZ4b9MjRQnhEz3d',
+          'content': 'aaaaaaaaaaaaaaaaaa'
+        },
+      ];
 
-    print('all data added');
+      for (var element in commentsData) {
+        await FirebaseFirestore.instance.collection('comments').add(element);
+      }
+    }).then((value) {
+      print('all data added');
+    });
   }
 
   final List<Widget> _pages = [HomePage(), const ProfilePage()];
@@ -280,9 +314,9 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    if (debug) {
-      addData();
-    }
+    // if (debug) {
+    //   addData();
+    // }
   }
 
   @override

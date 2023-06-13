@@ -1,1 +1,1 @@
-bool debug = false;
+bool debug = true;
